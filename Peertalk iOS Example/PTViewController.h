@@ -5,6 +5,7 @@
 
 @property (weak) IBOutlet UITextView *outputTextView;
 @property (weak) IBOutlet UITextField *inputTextField;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 - (void)sendMessage:(NSString*)message;
 

@@ -38,7 +38,7 @@
 @synthesize inputTextField = inputTextField_;
 @synthesize outputTextView = outputTextView_;
 @synthesize connectedDeviceID = connectedDeviceID_;
-
+@synthesize imageView = imageView_;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   // We use a serial queue that we toggle depending on if we are connected or
@@ -49,6 +49,11 @@
   
   // Configure the output NSTextView we use for UI feedback
   outputTextView_.textContainerInset = NSMakeSize(15.0, 10.0);
+  NSImage *image = [[NSImage alloc]initWithContentsOfFile:@"/Users/sansouci/Documents/12909667_10153477888867724_1918067506152827359_o.jpg"];
+  if (image == nil) {
+    NSLog(@"image nil");
+  }
+  imageView_.image = image;
   consoleTextAttributes_ = [NSDictionary dictionaryWithObjectsAndKeys:
                             [NSFont fontWithName:@"helvetica" size:16.0], NSFontAttributeName,
                             [NSColor lightGrayColor], NSForegroundColorAttributeName,
@@ -184,7 +189,8 @@
       && type != PTExampleFrameTypeTextMessage
       && type != PTExampleFrameTypePing
       && type != PTExampleFrameTypePong
-      && type != PTFrameTypeEndOfStream) {
+      && type != PTFrameTypeEndOfStream
+      && type != PTExampleFrameTypeARFrame) {
     NSLog(@"Unexpected frame of type %u", type);
     [channel close];
     return NO;
@@ -203,6 +209,66 @@
     textFrame->length = ntohl(textFrame->length);
     NSString *message = [[NSString alloc] initWithBytes:textFrame->utf8text length:textFrame->length encoding:NSUTF8StringEncoding];
     [self presentMessage:[NSString stringWithFormat:@"[%@]: %@", channel.userInfo, message] isStatus:NO];
+  } else if (type == PTExampleFrameTypeARFrame) {
+    PTExampleARFrame *pixelBuffer = (PTExampleARFrame *)payload.data;
+    pixelBuffer->width = ntohl(pixelBuffer->width);
+    pixelBuffer->height = ntohl(pixelBuffer->height);
+    pixelBuffer->length = ntohl(pixelBuffer->length);
+
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+
+    CGContextRef context = CGBitmapContextCreate(pixelBuffer->bufferData, pixelBuffer->width, pixelBuffer->height, 8,
+                                                 pixelBuffer->width*4, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedLast);
+
+    CGImageRef quartzImage = CGBitmapContextCreateImage(context);
+
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+    NSSize imageSize = NSMakeSize(pixelBuffer->width, pixelBuffer->height);
+    NSImage *image = [[NSImage alloc] initWithCGImage:quartzImage size:imageSize];
+
+    CGImageRelease(quartzImage);
+
+    imageView_.image = image;
+//    NSData *byteData = [NSData dataWithBytes:pixelBuffer->bufferData length:pixelBuffer->length];
+//    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:byteData];
+//    + (CIImage *)imageWithBitmapData:(NSData *)data
+//  bytesPerRow:(size_t)bytesPerRow
+//  size:(CGSize)size
+//  format:(CIFormat)format
+//  colorSpace:(nullable CGColorSpaceRef)colorSpace;
+
+//    NSImage * image = [[NSImage alloc] initWithSize:imageSize];
+//    [image addRepresentation:imageRep];
+//    NSImage *image = [[NSImage alloc] initWithData:data];
+//    imageView_.image = image;
+//    int w = CVPixelBufferGetWidth(pixelBuffer);
+//    int h = CVPixelBufferGetHeight(pixelBuffer);
+//    int r = CVPixelBufferGetBytesPerRow(pixelBuffer);
+//    int bytesPerPixel = r/w;
+
+//    UIGraphicsBeginImageContext(CGSizeMake(w, h));
+//
+//    CGContextRef c = UIGraphicsGetCurrentContext();
+//
+//    unsigned char* data = CGBitmapContextGetData(c);
+//    if (data != NULL) {
+//      int maxY = h;
+//      for(int y = 0; y<maxY; y++) {
+//        for(int x = 0; x<w; x++) {
+//          int offset = bytesPerPixel*((w*y)+x);
+//          data[offset] = buffer[offset];     // R
+//          data[offset+1] = buffer[offset+1]; // G
+//          data[offset+2] = buffer[offset+2]; // B
+//          data[offset+3] = buffer[offset+3]; // A
+//        }
+//      }
+//    }
+//    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+//
+//    UIGraphicsEndImageContext();
+
+    NSLog(@"We got a width %d and height %d", pixelBuffer->width, pixelBuffer->height);
   } else if (type == PTExampleFrameTypePong) {
     [self pongWithTag:tag error:nil];
   }

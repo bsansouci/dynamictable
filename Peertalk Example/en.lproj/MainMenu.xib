@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1108" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -11,7 +12,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="AMainMenu" systemMenu="main" id="29">
             <items>
                 <menuItem title="Peertalk Example" id="56">
@@ -652,22 +653,22 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="372">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="536">
-                        <rect key="frame" x="-1" y="67" width="482" height="294"/>
+                    <scrollView misplaced="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="536">
+                        <rect key="frame" x="345" y="67" width="136" height="294"/>
                         <clipView key="contentView" id="bQc-nQ-03h">
-                            <rect key="frame" x="0.0" y="0.0" width="482" height="294"/>
-                            <autoresizingMask key="autoresizingMask"/>
+                            <rect key="frame" x="0.0" y="0.0" width="136" height="294"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textView editable="NO" importsGraphics="NO" findStyle="bar" incrementalSearchingEnabled="YES" allowsUndo="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="537">
-                                    <rect key="frame" x="0.0" y="0.0" width="482" height="294"/>
+                                <textView editable="NO" importsGraphics="NO" verticallyResizable="YES" findStyle="bar" incrementalSearchingEnabled="YES" allowsUndo="YES" allowsNonContiguousLayout="YES" spellingCorrection="YES" smartInsertDelete="YES" id="537">
+                                    <rect key="frame" x="0.0" y="0.0" width="136" height="294"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" red="0.1098632812" green="0.1098632812" blue="0.1098632812" alpha="1" colorSpace="calibratedRGB"/>
-                                    <size key="minSize" width="482" height="294"/>
+                                    <size key="minSize" width="136" height="294"/>
                                     <size key="maxSize" width="482" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
@@ -679,7 +680,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="539">
-                            <rect key="frame" x="466" y="0.0" width="16" height="294"/>
+                            <rect key="frame" x="120" y="0.0" width="16" height="294"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -697,11 +698,16 @@
                             <action selector="sendMessage:" target="494" id="572"/>
                         </connections>
                     </textField>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gnU-cV-mZK">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="83R-6k-JDO"/>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="536" firstAttribute="top" secondItem="372" secondAttribute="top" constant="-1" id="563"/>
                     <constraint firstAttribute="trailing" secondItem="536" secondAttribute="trailing" constant="-1" id="565"/>
-                    <constraint firstItem="536" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="-1" id="566"/>
+                    <constraint firstItem="536" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="346" id="566"/>
                     <constraint firstAttribute="bottom" secondItem="536" secondAttribute="bottom" constant="67" id="637"/>
                     <constraint firstAttribute="trailing" secondItem="551" secondAttribute="trailing" constant="20" symbolic="YES" id="640"/>
                     <constraint firstAttribute="bottom" secondItem="551" secondAttribute="bottom" constant="20" symbolic="YES" id="644"/>
@@ -714,6 +720,7 @@
         </window>
         <customObject id="494" customClass="PTAppDelegate">
             <connections>
+                <outlet property="imageView" destination="gnU-cV-mZK" id="M5r-mt-uBq"/>
                 <outlet property="inputTextField" destination="551" id="570"/>
                 <outlet property="outputTextView" destination="537" id="571"/>
                 <outlet property="window" destination="371" id="532"/>

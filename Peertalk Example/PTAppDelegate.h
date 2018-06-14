@@ -8,6 +8,7 @@ static const NSTimeInterval PTAppReconnectDelay = 1.0;
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSTextField *inputTextField;
 @property (assign) IBOutlet NSTextView *outputTextView;
+@property (assign) IBOutlet NSImageView *imageView;
 
 - (IBAction)sendMessage:(id)sender;
 
